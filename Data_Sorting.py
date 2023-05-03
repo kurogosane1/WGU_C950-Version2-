@@ -22,6 +22,7 @@ class DataSort():
 
     # Data is sorted from the package list and assigned to the truck lists
     # Conditionally certain criteria are identified and assigned to each truck object and converted to a list
+
     def sort_to_trucks(self):
         with open('./data/package.csv') as locationCSV:
             locCSV = csv.reader(locationCSV, delimiter=',')
@@ -44,24 +45,32 @@ class DataSort():
 
                 # Conditional statements to determine which truck a package should be located and put these packages into a nested list for quick loaded
                 # Correct incorrect package details
-                if '10:30' != value[5] and '84104' != value[4]:
+                if '84104' in value[4] and '10:30' not in value[5]:
                     self.Truck_3.add_to_Truck(value)
+                    # self.test3.append(value)
 
                 # To filter out EOD to truck delivery
                 if value[5] != 'EOD':
-                    if 'Must be' in value[7] or 'None' in value[8]:
+                    if 'Must' in value[7] or 'None' in value[7]:
+                        # if len(self.Truck_1.get_truck_list(value)) < 17:
                         self.Truck_1.add_to_Truck(value)
+                        # self.test1.append(value)
 
                 # Second truck delivery
                 if 'Can only be' in value[7] or 'Delayed' in value[7]:
                     self.Truck_2.add_to_Truck(value)
+                    # self.test2.append(value)
 
                 # Putting whatever is not remaining in in first truck and second truck, then placing them in  third truck
                 if value not in self.Truck_1.get_truck_list() and value not in self.Truck_2.get_truck_list() and value not in self.Truck_3.get_truck_list():
                     if len(self.Truck_2.get_truck_list()) < len(self.Truck_3.get_truck_list()):
                         self.Truck_2.add_to_Truck(value)
+                        # self.test2.append(value)
                     else:
                         self.Truck_3.add_to_Truck(value)
+                        # self.test3.append(value)
+                    # self.Truck_2.add_to_Truck(value) if len(self.Truck_2.get_truck_list()) < len(
+                    #     self.Truck_3.get_truck_list()) else self.Truck_3.add_to_Truck(value)
 
             # Inserting trucks to the main list as well
             self.my_Hash.insert(id, value)
@@ -72,9 +81,12 @@ class DataSort():
         return self.Truck_1.get_truck_list()
 
     # Getting Truck 2
+
     def get_second_truck(self):
         return self.Truck_2.get_truck_list()
+        # return self.test2
 
     # Getting Truck 3
     def get_third_truck(self):
         return self.Truck_3.get_truck_list()
+        # return self.test3
