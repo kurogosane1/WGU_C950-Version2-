@@ -65,8 +65,8 @@ def get_current_distance(row, col):
 
 # This is to calculate the time to travelled by each truck
 # Then accordingly the truck delivery time will be calculated
-
-def get_time_travelled(distance, arrayList):
+def get_time_travelled(distance):
+# def get_time_travelled(distance, arrayList):
     # Speed that the truck could travel
     time = distance/ 18   
     # This converts the time into a string format at arrival time 
@@ -76,15 +76,42 @@ def get_time_travelled(distance, arrayList):
     # Now we append to the list as this is the delivery time
     # arrayList.append(arrival_time)
     total = datetime.timedelta()
+    # print(f'this arrival time travelled {arrival_time}')
     # time_now = datetime.datetime.now()
     (hrs, mins, secs) = arrival_time.split(':')
     arrive = total + datetime.timedelta(hours=int(hrs), minutes=int(mins), seconds=int(secs))
-    return arrive
+    # print(f'This is to arrive {arrive}')
+    return str(arrive)
     
-
+def get_time_travelled2(distance, arrayList):
+# def get_time_travelled(distance, arrayList):
+    # Speed that the truck could travel
+    time = distance/ 18   
+    # This converts the time into a string format at arrival time 
+    time_in_minutes = '{0:02.0f}:{1:02.0f}'.format(
+            *divmod(time * 60, 60))
+    arrival_time = time_in_minutes + ':00'
+    arrayList.append(arrival_time)
+    # Now we append to the list as this is the delivery time
+    # arrayList.append(arrival_time)
+    total = datetime.timedelta()
+    # print(f'this arrival time travelled {arrival_time}')
+    # time_now = datetime.datetime.now()
+    # (hrs, mins, secs) = arrival_time.split(':')
+    # arrive = total + datetime.timedelta(hours=int(hrs), minutes=int(mins), seconds=int(secs))
+    # print(f'This is to arrive {arrive}')
+    # return arrive
+    for i in arrayList:
+         (h,m,s) = i.split(':')
+         d = datetime.timedelta(hours=int(h),minutes=int(m), seconds=int(s))
+         total += d
+         print(f"Here is the total {total}")
+    return str(total)     
+    
 
 def printing_distance(arrayList):
         total = 0
+        # print(f'checking this if it works {get_time_travelled(total)}')
         for i in range(0, len(arrayList)):
             if i+1 < len(arrayList):
                 distance = get_current_distance(
@@ -95,7 +122,7 @@ def printing_distance(arrayList):
                     int(arrayList[i]), int(arrayList[0]))
                 total += distance
 
-        print('Final total is total is {:.2f}'.format(total))
+        # print('Final total is total is {:.2f}'.format(total))
         return total
 
 def get_shortest_point(row, arrayList):
@@ -113,6 +140,14 @@ def get_shortest_point(row, arrayList):
             shortest_distance = temp
         return index
 
+# This is to get the address of the location where the package is going 
+def get_package_address(serial):
+    with open('./data/addressData.csv') as addCSV:
+        address_CSV = list(csv.reader(addCSV, delimiter=','))
+        for i in range(0,len(address_CSV)):
+             if serial == address_CSV[i][0]:
+                  return address_CSV[i][2]
+             
 # Steps to get the nearest neighbor right
 # First we need to start to check if the distance to any of the items in the list are closer from the starting point
 # We do that by placing the starting point in a seperate list
@@ -123,6 +158,8 @@ def get_shortest_path(arrayList):
         startingPoint = ['0']
         # Since this is the starting point and this will change as we determine the shortest route from here on. 
         # Its replaced as the shortest next point is determined 
+        arrayList.remove('0')
+        print(arrayList)
         currentPoint = '0'
         placesNotVisited = sorted(arrayList)
         while len(arrayList) > 0:
