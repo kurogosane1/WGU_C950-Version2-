@@ -9,6 +9,7 @@ from Package import Packages
 class DataSort():
     def __init__(self):
         pass
+    
 
     # Creating the truck list
     # Truck Number 1
@@ -39,9 +40,10 @@ class DataSort():
                 starting_time = ''
                 delivery_address = ''
                 status = "At Hub"
+                truck_number=''
 
                 value = [id, address, city, state, zip, delivery,
-                         size, notes, starting_time, delivery_address, status]
+                         size, notes, starting_time, delivery_address, status, truck_number]
 
                 # Conditional statements to determine which truck a package should be located and put these packages into a nested list for quick loaded
                 # Correct incorrect package details
@@ -65,15 +67,11 @@ class DataSort():
                 if value not in self.Truck_1.get_truck_list() and value not in self.Truck_2.get_truck_list() and value not in self.Truck_3.get_truck_list():
                     if len(self.Truck_2.get_truck_list()) < len(self.Truck_3.get_truck_list()):
                         self.Truck_2.add_to_Truck(value)
-                        # self.test2.append(value)
                     else:
                         self.Truck_3.add_to_Truck(value)
-                        # self.test3.append(value)
-                    # self.Truck_2.add_to_Truck(value) if len(self.Truck_2.get_truck_list()) < len(
-                    #     self.Truck_3.get_truck_list()) else self.Truck_3.add_to_Truck(value)
 
-            # Inserting trucks to the main list as well
-            self.my_Hash.insert(id, value)
+                # Inserting trucks to the main list as well
+                self.my_Hash.insert(id, value)
 
      # Now being able to deliver trucks list
 
@@ -90,3 +88,8 @@ class DataSort():
     def get_third_truck(self):
         return self.Truck_3.get_truck_list()
         # return self.test3
+
+    def get_All_Pacakges(self):
+        return self.my_Hash
+
+    

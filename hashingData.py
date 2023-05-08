@@ -17,15 +17,12 @@ class HashingData:
     # Inserting a new item into the hash table
     def insert(self, key, item):
         Hkey = self.hash_key_generator(key)
-        # bucket_list = self.data[Hkey]
-        # print(f'This is line 21 in hashingData file {key} and value is {item}')
         # First to check if the Hash Key does exist of not
         if self.data[Hkey] == None:
             self.data[Hkey] = [key, item]
             return True  # End the function to continue to add more later
         else:
             for keyValue in self.data[Hkey]:
-                # print(keyValue)
                 if keyValue[0] == key:
                     keyValue[1] = item
                     return True
@@ -42,7 +39,6 @@ class HashingData:
         # In case the key doesn't exist
         if self.data[Hkey] != None:
             for items in self.data[Hkey]:
-                print(items[0]== key)
                 if items[0] == key:
                     return items[1]
             return None
@@ -51,7 +47,6 @@ class HashingData:
     def delete(self, key):
         Hkey = self.hash_key_generator(key)
         bucket_list = self.data[Hkey]
-
         if self.data[Hkey] == None:
             return False
         else:

@@ -1,8 +1,9 @@
 # Syed Khurshid, SID:010081191
 
-import datetime
 
-def userMenu():
+# from status import Status
+
+def userMenu(status, myHash):
     # This is run when the display message is seen in the terminal
     # The interface is accessible via terminal 
     miles =''
@@ -15,11 +16,11 @@ def userMenu():
     print("Anytime you'd like to exit or quit, please type in either 'q' or 'quit' or 'exit'")
     print("1 - Get the status of all package[s] within a designated time range")
     print("2 - Get a single package information")
-    print("3 - Get a package[s] by address")
-    print("4 - Get package[s] info by City")
-    print("5 - Get package[s] by zipcode")
-    print("6 - Get package[s] by package weight")
-    print("7 - Get by Deadline")
+    # print("3 - Get a package[s] by address")
+    # print("4 - Get package[s] info by City")
+    # print("5 - Get package[s] by zipcode")
+    # print("6 - Get package[s] by package weight")
+    # print("7 - Get by Deadline")
 
     # User selects the options from the list of above options
     selection = input(" Plesae select the options above by entering a number from 1-7: ")
@@ -27,4 +28,6 @@ def userMenu():
 
     match selection:
         case "1":
-            print("Test") 
+            status.get_all_status(myHash)
+        case "2":
+            status.get_ind_package_status(myHash)

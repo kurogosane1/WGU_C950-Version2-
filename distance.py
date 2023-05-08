@@ -14,12 +14,7 @@ truck2 = datasort.get_second_truck()
 truck3 = datasort.get_third_truck()
 
 # This is to get the address location of the points
-
-
-    # Starting truck index of address
-first_truck = []
-second_truck = []
-third_truck = []
+# Starting truck index of address
 first_truck_index = []
 second_truck_index = []
 third_truck_index = []
@@ -57,7 +52,6 @@ def get_current_distance(row, col):
         # This is to get the distance point
         with open('./data/distance.csv') as distCSV:
             distance_CSV = list(csv.reader(distCSV, delimiter=','))
-            # print(distance_CSV[row][col])
             distance = distance_CSV[row][col]
             if distance == '':
                 distance = distance_CSV[col][row]
@@ -65,26 +59,25 @@ def get_current_distance(row, col):
 
 # This is to calculate the time to travelled by each truck
 # Then accordingly the truck delivery time will be calculated
-def get_time_travelled(distance):
-# def get_time_travelled(distance, arrayList):
-    # Speed that the truck could travel
-    time = distance/ 18   
-    # This converts the time into a string format at arrival time 
-    time_in_minutes = '{0:02.0f}:{1:02.0f}'.format(
-            *divmod(time * 60, 60))
-    arrival_time = time_in_minutes + ':00'
-    # Now we append to the list as this is the delivery time
-    # arrayList.append(arrival_time)
-    total = datetime.timedelta()
-    # print(f'this arrival time travelled {arrival_time}')
-    # time_now = datetime.datetime.now()
-    (hrs, mins, secs) = arrival_time.split(':')
-    arrive = total + datetime.timedelta(hours=int(hrs), minutes=int(mins), seconds=int(secs))
-    # print(f'This is to arrive {arrive}')
-    return str(arrive)
+# def get_time_travelled(distance):
+# # def get_time_travelled(distance, arrayList):
+#     # Speed that the truck could travel
+#     time = distance/ 18   
+#     # This converts the time into a string format at arrival time 
+#     time_in_minutes = '{0:02.0f}:{1:02.0f}'.format(
+#             *divmod(time * 60, 60))
+#     arrival_time = time_in_minutes + ':00'
+#     # Now we append to the list as this is the delivery time
+#     # arrayList.append(arrival_time)
+#     total = datetime.timedelta()
+
+#     # time_now = datetime.datetime.now()
+#     (hrs, mins, secs) = arrival_time.split(':')
+#     arrive = total + datetime.timedelta(hours=int(hrs), minutes=int(mins), seconds=int(secs))
+
+#     return str(arrive)
     
-def get_time_travelled2(distance, arrayList):
-# def get_time_travelled(distance, arrayList):
+def get_time_travelled(distance, arrayList):
     # Speed that the truck could travel
     time = distance/ 18   
     # This converts the time into a string format at arrival time 
@@ -92,26 +85,18 @@ def get_time_travelled2(distance, arrayList):
             *divmod(time * 60, 60))
     arrival_time = time_in_minutes + ':00'
     arrayList.append(arrival_time)
-    # Now we append to the list as this is the delivery time
-    # arrayList.append(arrival_time)
+    # Now we append to the list as this is the delivery time that will 
+    # will calculate the total time travelled from starting point
     total = datetime.timedelta()
-    # print(f'this arrival time travelled {arrival_time}')
-    # time_now = datetime.datetime.now()
-    # (hrs, mins, secs) = arrival_time.split(':')
-    # arrive = total + datetime.timedelta(hours=int(hrs), minutes=int(mins), seconds=int(secs))
-    # print(f'This is to arrive {arrive}')
-    # return arrive
     for i in arrayList:
          (h,m,s) = i.split(':')
          d = datetime.timedelta(hours=int(h),minutes=int(m), seconds=int(s))
          total += d
-         print(f"Here is the total {total}")
     return str(total)     
     
 
 def printing_distance(arrayList):
         total = 0
-        # print(f'checking this if it works {get_time_travelled(total)}')
         for i in range(0, len(arrayList)):
             if i+1 < len(arrayList):
                 distance = get_current_distance(
@@ -159,9 +144,8 @@ def get_shortest_path(arrayList):
         # Since this is the starting point and this will change as we determine the shortest route from here on. 
         # Its replaced as the shortest next point is determined 
         arrayList.remove('0')
-        print(arrayList)
+        arrayList.sort()
         currentPoint = '0'
-        placesNotVisited = sorted(arrayList)
         while len(arrayList) > 0:
             for i in range(0, len(arrayList)):
                 # we first get the shortest distance from the first point
@@ -172,10 +156,8 @@ def get_shortest_path(arrayList):
                 currentPoint = arrayList[check_value]
                 arrayList.pop(check_value)
         startingPoint.append('0')
-        print(startingPoint)
         num = printing_distance(startingPoint)
         d=dict()
-        # return {round(num, 2), startingPoint}
         d['distance'] = round(num, 2)
         d['path'] = startingPoint
         return d
