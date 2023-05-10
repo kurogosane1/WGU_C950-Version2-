@@ -92,4 +92,10 @@ class DataSort():
     def get_All_Pacakges(self):
         return self.my_Hash
 
-    
+    # Searching a key value and replacing value in truck
+    def replace_in_truck(self, key, truckList,new_value, truck_number):
+        for i in range(0,len(truckList)):
+            if truckList[i][0]== key:
+                truckList[i] = new_value
+                truckList[i][11] = truck_number
+        

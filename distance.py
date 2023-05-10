@@ -19,7 +19,7 @@ first_truck_index = []
 second_truck_index = []
 third_truck_index = []
 
-    # All trucks start from from the Hub which has an index of 0
+# All trucks start from from the Hub which has an index of 0
 first_truck_index.append("0"),
 second_truck_index.append("0")
 third_truck_index.append("0")
@@ -58,25 +58,7 @@ def get_current_distance(row, col):
         return float(distance)
 
 # This is to calculate the time to travelled by each truck
-# Then accordingly the truck delivery time will be calculated
-# def get_time_travelled(distance):
-# # def get_time_travelled(distance, arrayList):
-#     # Speed that the truck could travel
-#     time = distance/ 18   
-#     # This converts the time into a string format at arrival time 
-#     time_in_minutes = '{0:02.0f}:{1:02.0f}'.format(
-#             *divmod(time * 60, 60))
-#     arrival_time = time_in_minutes + ':00'
-#     # Now we append to the list as this is the delivery time
-#     # arrayList.append(arrival_time)
-#     total = datetime.timedelta()
-
-#     # time_now = datetime.datetime.now()
-#     (hrs, mins, secs) = arrival_time.split(':')
-#     arrive = total + datetime.timedelta(hours=int(hrs), minutes=int(mins), seconds=int(secs))
-
-#     return str(arrive)
-    
+# Then accordingly the truck delivery time will be calculated 
 def get_time_travelled(distance, arrayList):
     # Speed that the truck could travel
     time = distance/ 18   
@@ -93,7 +75,7 @@ def get_time_travelled(distance, arrayList):
          d = datetime.timedelta(hours=int(h),minutes=int(m), seconds=int(s))
          total += d
     return str(total)     
-    
+
 
 def printing_distance(arrayList):
         total = 0
@@ -109,7 +91,7 @@ def printing_distance(arrayList):
 
         # print('Final total is total is {:.2f}'.format(total))
         return total
-
+# Getting the shortest points for the array list of trucks to follow
 def get_shortest_point(row, arrayList):
         temp = 0.0
         shortest_distance = 0.0
