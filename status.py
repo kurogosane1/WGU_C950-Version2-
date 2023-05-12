@@ -131,8 +131,8 @@ class Status():
     # This is to get the individual package status
 
     def get_ind_package_status(self, myhash, truck1, truck2, truck3, dataTest):
-        # User input is broken down for the datetime library
-        # converting in a date time format
+        #User input is broken down for the datetime library
+        #converting in a date time format
         fix = myhash.search("13")
         fix[11]=1
         myhash.update("13",fix)
@@ -154,7 +154,7 @@ class Status():
             if con_user_time >= con_check_time:
                 # Package 9 address needs to be found and update
                 result = myhash.search("9")
-                print(f"This is the search result {result}")
+                # print(f"This is the search result {result}")
                 result[1] = "410 S State St"
                 result[2] = "Salt Lake City"
                 result[3] = "UT"
@@ -165,7 +165,7 @@ class Status():
                     print("Found in Truck 1")
                 elif result in truck2:
                     dataTest.replace_in_truck("9", truck2, result, 2)
-                    print(truck2)
+                    # print(truck2)
                     temp2 = set_values(truck2)
                     temp2.insert(0, "0")
                     T2 = get_shortest_path(temp2)
@@ -206,3 +206,4 @@ class Status():
             else:
                 print("Invalid Package ID entered")
                 exit()
+  

@@ -76,7 +76,7 @@ def get_time_travelled(distance, arrayList):
          total += d
     return str(total)     
 
-
+# THis determines the distance from the starting point till the next point
 def printing_distance(arrayList):
         total = 0
         for i in range(0, len(arrayList)):
@@ -130,9 +130,9 @@ def get_shortest_path(arrayList):
         currentPoint = '0'
         while len(arrayList) > 0:
             for i in range(0, len(arrayList)):
-                # we first get the shortest distance from the first point
+                # we first get the nearest point from the current point
                 check_value = get_shortest_point(int(currentPoint), arrayList)
-                # After we identify the shortest distance from the first point, we append it to the starting Point Array
+                # After we identify the next best point from the current point, we append it to the starting Point Array
                 startingPoint.append(arrayList[check_value])
                 # We remove the visited location from the array list and declare it as the Current Point
                 currentPoint = arrayList[check_value]
