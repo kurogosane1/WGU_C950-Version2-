@@ -1,8 +1,6 @@
 # Syed Khurshid, SID:010081191
 
-
-# from status import Status
-
+# User menu is what is seen when the user runs the system -> O(N^2)
 def userMenu(status, myHash, truck1, truck2, truck3, dataTest):
     # This is run when the display message is seen in the terminal
     # The interface is accessible via terminal
@@ -20,17 +18,22 @@ def userMenu(status, myHash, truck1, truck2, truck3, dataTest):
 
     # User selects the options from the list of above options
     selection = input(
-        " Plesae select the options above by entering a number from 1-2: ")
-
+        " Please select the options above by entering a number from 1-2: ")
+     # O(N^2)
     match selection:
         case "1":
+            # O(N^2)
             status.get_all_status(myHash, truck1, truck2, truck3, dataTest)
         case "2":
+             # O(N^2)
             status.get_ind_package_status(
                 myHash, truck1, truck2, truck3, dataTest)
         case "Quit":
+            # O(1)
             exit()
         case "q":
+            # O(1)
             exit()
         case "quit":
+            # O(1)
             exit()

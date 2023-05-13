@@ -23,11 +23,11 @@ class DataSort():
 
     # Data is sorted from the package list and assigned to the truck lists
     # Conditionally certain criteria are identified and assigned to each truck object and converted to a list
-
+    # O(N)
     def sort_to_trucks(self):
         with open('./data/package.csv') as locationCSV:
             locCSV = csv.reader(locationCSV, delimiter=',')
-
+            # O(N)
             for row in locCSV:
                 id = row[0]
                 address = row[1]
@@ -74,25 +74,27 @@ class DataSort():
                 self.my_Hash.insert(id, value)
 
      # Now being able to deliver trucks list
-
+     # O(1)
     def get_first_truck(self):
         return self.Truck_1.get_truck_list()
 
     # Getting Truck 2
-
+    # O(1)
     def get_second_truck(self):
         return self.Truck_2.get_truck_list()
         # return self.test2
 
     # Getting Truck 3
+    # O(1)
     def get_third_truck(self):
         return self.Truck_3.get_truck_list()
-        # return self.test3
-
+    # Getting all the Hash Table
+    # O(1)
     def get_All_Pacakges(self):
         return self.my_Hash
 
     # Searching a key value and replacing value in truck
+    # O(N)
     def replace_in_truck(self, key, truckList,new_value, truck_number):
         for i in range(0,len(truckList)):
             if truckList[i][0]== key:

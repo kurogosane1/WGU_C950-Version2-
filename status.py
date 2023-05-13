@@ -2,17 +2,18 @@
 
 import datetime
 from distance import get_shortest_path, set_values, get_current_distance, get_package_address, get_time_travelled
-from hashingData import HashingData
+# from hashingData import HashingData
 # from Data_Sorting import DataSort,replace_in_truck
 
 
-# This is where the package status[s] will be used to find and identify where they stand
+# This is where the package status[s] will be used to find and identify where they stand -> O(N^2)
 class Status():
     def __init__(self):
         pass
-
+        # This sets the delivery time of the package into the truck list and array -> O(N^2)
     def set_time(self, shortestPath_truck, truck_list, truck_number, myHash):
         start_time = ""
+        # O(1)
         if truck_number == 1:
             start_time = "08:00:00"
         elif truck_number == 2:
@@ -21,23 +22,28 @@ class Status():
             start_time = "11:00:00"
         travelled_distance = 0
         # Based on the truck_number we arrange the start time
+        # O(N)
         for i in range(0, len(truck_list)):
             truck_list[i][8] = start_time
         tempTime = [start_time]
         # Setting the path
+        # O(N)
         for index in range(0, len(shortestPath_truck)):
             try:
+                # O(1)
                 distance = get_current_distance(
                     int(shortestPath_truck[index]), int(shortestPath_truck[index+1]))
                 travelled_distance = distance
+                # O(N)
                 time_travelled = get_time_travelled(
                     travelled_distance, tempTime)
                 if truck_list[index+1] == "0":
                     pass
-                # This is to set the path to the truck lists
+                # This is to set the path to the truck lists -> O(N)
                 address = get_package_address(shortestPath_truck[index])
                 if address == "0":
                     pass
+                # O(N)
                 for i in range(len(truck_list)):
                     if truck_list[i][1] == address:
                         truck_list[i][5] = time_travelled
@@ -47,16 +53,18 @@ class Status():
             except IndexError:
                 pass
 
-    # This is to determine the status of the package at a particular time
+    # This is to determine the status of the package at a particular time -> O(N^2)
     def get_all_status(self, myHash, truck1, truck2, truck3, dataTest):
         # User input is broken down for the datetime library
         # converting in a date time format
         fix = myHash.search("13")
-        fix[11]=1
-        myHash.update("13",fix)
+        fix[11] = 1
+        # O(N)
+        myHash.update("13", fix)
         fix = myHash.search("9")
-        fix[11]=2
-        myHash.update("9",fix)
+        fix[11] = 2
+        # O(N)
+        myHash.update("9", fix)
         print(
             "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
         user_time = input(
@@ -86,7 +94,6 @@ class Status():
                     print("Found in Truck 1")
                 elif result in truck2:
                     dataTest.replace_in_truck("9", truck2, result, 2)
-                    # print(f'This is after truck 2 is updated {truck2}')
                     temp2 = set_values(truck2)
                     temp2.insert(0, "0")
                     T2 = get_shortest_path(temp2)
@@ -94,12 +101,14 @@ class Status():
                 else:
                     print("Found in Truck 3")
             # Counting for all the packages
+            # O(N^2)
             for count in range(1, 41):
-                package = myHash.search(str(count))
-                # print(myHash.search(str(13)))
 
+                package = myHash.search(str(count))
                 try:
+                    # O(N)
                     starting_time = myHash.search(str(count))[8]
+                    # O(N)
                     delivery_time = myHash.search(str(count))[5]
                     (h, m, s) = starting_time.split(':')
                     conv_starting_time = datetime.timedelta(
@@ -117,25 +126,23 @@ class Status():
 
                 elif conv_starting_time < con_user_time:
                     if con_user_time < conv_del_time:
-                        # package = myHash.search(str(count))
                         package[10] = "In transit"
                         print(
                             f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
 
                     else:
-                        # package = myHash.search(str(count))
                         package[10] = "Delivered"
                         print(
                             f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
 
     # This is to get the individual package status
-
+    # O(N^2)
     def get_ind_package_status(self, myhash, truck1, truck2, truck3, dataTest):
-        #User input is broken down for the datetime library
-        #converting in a date time format
+        # User input is broken down for the datetime library
+        # converting in a date time format
         fix = myhash.search("13")
-        fix[11]=1
-        myhash.update("13",fix)
+        fix[11] = 1
+        myhash.update("13", fix)
         print(
             "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
         user_time = input(
@@ -206,4 +213,3 @@ class Status():
             else:
                 print("Invalid Package ID entered")
                 exit()
-  

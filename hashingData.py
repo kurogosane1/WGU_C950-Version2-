@@ -2,9 +2,10 @@
 
 
 # Creating a HashTable class using chaining
+# -> O(N)
 class HashingData:
     # Constructor with optional initial capacity parameter
-    # Buckets are assigned to an empty list
+    # Buckets are assigned to an empty list -> O(N)
     def __init__(self, initial_capacity=10):
         self.data = []
         for _ in range(initial_capacity):
@@ -14,7 +15,7 @@ class HashingData:
     def hash_key_generator(self, key):
         return hash(key) % len(self.data)
 
-    # Inserting a new item into the hash table
+    # Inserting a new item into the hash table -> O(N)
     def insert(self, key, item):
         Hkey = self.hash_key_generator(key)
         # First to check if the Hash Key does exist of not
@@ -31,8 +32,7 @@ class HashingData:
             return True
 
     # Searching for an item with matching key in the hash table
-    # Returns the item if not found, or None if not found
-
+    # Returns the item if not found, or None if not found -> O(N)
     def search(self, key):
         # get the bucket list where the key is located
         Hkey = self.hash_key_generator(key)
@@ -43,7 +43,7 @@ class HashingData:
                     return items[1]
             return None
 
-    # Removes an item with matching key from hash table.
+    # Removes an item with matching key from hash table. -> O(N)
     def delete(self, key):
         Hkey = self.hash_key_generator(key)
         bucket_list = self.data[Hkey]
@@ -56,7 +56,7 @@ class HashingData:
                     return True
             return False
 
-    # To Update the item in a key
+    # To Update the item in a key -> O(N)
     def update(self, key, value):
         Hkey = self.hash_key_generator(key)
         # Now to search for hashed line item if its been found or not
@@ -69,6 +69,6 @@ class HashingData:
         # In case the key doesn't match
         return None
 
-    # This is to get the self table
+    # This is to get the self table -> O(1)
     def get_hash_Table(self):
         return self.data
