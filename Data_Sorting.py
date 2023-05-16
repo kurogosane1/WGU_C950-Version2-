@@ -9,7 +9,6 @@ from Package import Packages
 class DataSort():
     def __init__(self):
         pass
-    
 
     # Creating the truck list
     # Truck Number 1
@@ -40,10 +39,11 @@ class DataSort():
                 starting_time = ''
                 delivery_address = ''
                 status = "At Hub"
-                truck_number=''
+                truck_number = ''
+                delivery_time = row[5]
 
                 value = [id, address, city, state, zip, delivery,
-                         size, notes, starting_time, delivery_address, status, truck_number]
+                         size, notes, starting_time, delivery_address, status, truck_number, delivery_time]
 
                 # Conditional statements to determine which truck a package should be located and put these packages into a nested list for quick loaded
                 # Correct incorrect package details
@@ -90,14 +90,14 @@ class DataSort():
         return self.Truck_3.get_truck_list()
     # Getting all the Hash Table
     # O(1)
+
     def get_All_Pacakges(self):
         return self.my_Hash
 
     # Searching a key value and replacing value in truck
     # O(N)
-    def replace_in_truck(self, key, truckList,new_value, truck_number):
-        for i in range(0,len(truckList)):
-            if truckList[i][0]== key:
+    def replace_in_truck(self, key, truckList, new_value, truck_number):
+        for i in range(0, len(truckList)):
+            if truckList[i][0] == key:
                 truckList[i] = new_value
                 truckList[i][11] = truck_number
-        

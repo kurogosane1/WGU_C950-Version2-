@@ -8,10 +8,42 @@ from distance import get_shortest_path, set_values, get_current_distance, get_pa
 
 # This is where the package status[s] will be used to find and identify where they stand -> O(N^2)
 class Status():
+    # Constructor
     def __init__(self):
         pass
-        # This sets the delivery time of the package into the truck list and array -> O(N^2)
 
+    # This converts to time
+    # O(1)
+    def convert_time(self, input):
+        if input != 'EOD':
+            (hrs, min, secs) = input.split(":")
+            converted_time = datetime.timedelta(
+                hours=int(hrs), minutes=int(min), seconds=int(secs))
+            return converted_time
+        else:
+            return "EOD"
+
+    # This is to fix the incorrect address mistakes
+    # O(1)
+    def fix_address(self, myHash, truck1, truck2, truck3, dataTest):
+        result = myHash.search("9")
+        result[1] = "410 S State St"
+        result[2] = "Salt Lake City"
+        result[3] = "UT"
+        result[4] = "84111"
+        myHash.update("9", result)
+        if result in truck1:
+            print("Found in Truck 1")
+        elif result in truck2:
+            dataTest.replace_in_truck("9", truck2, result, 2)
+            temp2 = set_values(truck2)
+            temp2.insert(0, "0")
+            T2 = get_shortest_path(temp2)
+            self.set_time(T2['path'], truck2, 2, myHash)
+        else:
+            print("Found in Truck 3")
+
+    # This sets the delivery time of the package into the truck list and array -> O(N^2)
     def set_time(self, shortestPath_truck, truck_list, truck_number, myHash):
         start_time = ""
         # O(1)
@@ -49,7 +81,7 @@ class Status():
                     if truck_list[i][1] == address:
                         truck_list[i][5] = time_travelled
                         input = [truck_list[i][0], truck_list[i][1], truck_list[i][2], truck_list[i][3], truck_list[i][4], truck_list[i]
-                                 [5], truck_list[i][6], truck_list[i][7], truck_list[i][8], truck_list[i][9], truck_list[i][10], str(truck_number)]
+                                 [5], truck_list[i][6], truck_list[i][7], truck_list[i][8], truck_list[i][9], truck_list[i][10], str(truck_number), truck_list[i][12]]
                         myHash.update(truck_list[i][0], input)
             except IndexError:
                 pass
@@ -70,74 +102,50 @@ class Status():
             "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
         user_time = input(
             'Enter a time to get all packages till that time\n and enter as (HH:MM:SS): ')
-
         if user_time != "Quit" or user_time != "q" or user_time != "exit":
-            (hrs, min, sec) = user_time.split(':')
-            con_user_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
+            con_user_time = self.convert_time(user_time)
 
             # Need to check if the package 9 address needs to be updated since the address was wrong
             check_time = "10:20:00"
-            (hrs, min, sec) = check_time.split(":")
-            con_check_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
-            # print(f'this is truck truck 2 before update {truck2}')
+            con_check_time = self.convert_time(check_time)
             if con_user_time >= con_check_time:
                 # Package 9 address needs to be found and update
-                result = myHash.search("9")
-                result[1] = "410 S State St"
-                result[2] = "Salt Lake City"
-                result[3] = "UT"
-                result[4] = "84111"
-                # result[11] = "2"
-                myHash.update("9", result)
-                if result in truck1:
-                    print("Found in Truck 1")
-                elif result in truck2:
-                    dataTest.replace_in_truck("9", truck2, result, 2)
-                    temp2 = set_values(truck2)
-                    temp2.insert(0, "0")
-                    T2 = get_shortest_path(temp2)
-                    self.set_time(T2['path'], truck2, 2, myHash)
-                else:
-                    print("Found in Truck 3")
+                self.fix_address(myHash, truck1, truck2, truck3, dataTest)
             # Counting for all the packages
             # O(N^2)
             for count in range(1, 41):
-
+                # O(N)
                 package = myHash.search(str(count))
                 try:
                     # O(N)
                     starting_time = myHash.search(str(count))[8]
                     # O(N)
                     delivery_time = myHash.search(str(count))[5]
-                    (h, m, s) = starting_time.split(':')
-                    conv_starting_time = datetime.timedelta(
-                        hours=int(h), minutes=int(m), seconds=int(s))
+                    conv_starting_time = self.convert_time(starting_time)
                     (h, m, s) = delivery_time.split(':')
                     conv_del_time = datetime.timedelta(
                         hours=int(h), minutes=int(m), seconds=int(s))
                 except ValueError:
                     pass
-
                 if conv_starting_time > con_user_time:
                     package[10] = "At Hub"
                     print(
-                        f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}, Current status {package[10]}')
+                        f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}, Current status {package[10]}. What was the original delivery deadline {package[12]}')
 
                 elif conv_starting_time < con_user_time:
                     if con_user_time < conv_del_time:
                         package[10] = "In transit"
                         print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]}. What was the original delivery deadline {package[12]} ')
 
                     else:
                         package[10] = "Delivered"
                         print(
-                            f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                            f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}. What was the original delivery deadline {package[12]}')
 
     # This is to get the individual package status
     # O(N^2)
+
     def get_ind_package_status(self, myhash, truck1, truck2, truck3, dataTest):
         # User input is broken down for the datetime library
         # converting in a date time format
@@ -151,71 +159,46 @@ class Status():
         package_id = input("Enter valid package ID Number ")
 
         if user_time != "Quit" or user_time != "q" or user_time != "exit":
-            (hrs, min, sec) = user_time.split(':')
-            con_user_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
+            con_user_time = self.convert_time(user_time)
             # Need to check if the package 9 address needs to be updated since the address was wrong
             check_time = "10:20:00"
-            (hrs, min, sec) = check_time.split(":")
-            con_check_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
+            con_check_time = self.convert_time(check_time)
             if con_user_time >= con_check_time:
                 # Package 9 address needs to be found and update
-                result = myhash.search("9")
-                # print(f"This is the search result {result}")
-                result[1] = "410 S State St"
-                result[2] = "Salt Lake City"
-                result[3] = "UT"
-                result[4] = "84111"
-                # result[11] = "2"
-                myhash.update("9", result)
-                if result in truck1:
-                    print("Found in Truck 1")
-                elif result in truck2:
-                    dataTest.replace_in_truck("9", truck2, result, 2)
-                    # print(truck2)
-                    temp2 = set_values(truck2)
-                    temp2.insert(0, "0")
-                    T2 = get_shortest_path(temp2)
-                    self.set_time(T2['path'], truck2, 2, myhash)
-                else:
-                    print("Found in Truck 3")
-            packageInfo = myhash.search(package_id)
-            if packageInfo != None:
-                try:
-                    starting_time = packageInfo[8]
-                    delivery_time = packageInfo[5]
-                    (h, m, s) = starting_time.split(':')
-                    conv_starting_time = datetime.timedelta(
-                        hours=int(h), minutes=int(m), seconds=int(s))
-                    (h, m, s) = delivery_time.split(':')
-                    conv_del_time = datetime.timedelta(
-                        hours=int(h), minutes=int(m), seconds=int(s))
-                except ValueError:
-                    pass
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
+            # if packageInfo != None:
+            try:
+                packageInfo = myhash.search(package_id)
+                starting_time = packageInfo[8]
+                delivery_time = packageInfo[5]
+                conv_starting_time = self.convert_time(starting_time)
+                conv_del_time = self.convert_time(delivery_time)
                 if conv_starting_time > con_user_time:
-
                     packageInfo[10] = "At Hub"
                     print(
                         f'Package ID: {packageInfo[0]}, "Delivering at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departs on Truck {packageInfo[11]} at {packageInfo[8]}. Current Status is {packageInfo[10]}')
 
                 elif conv_starting_time < con_user_time:
                     if con_user_time < conv_del_time:
-
                         packageInfo[10] = "In transit"
                         print(
                             f'Package ID: {packageInfo[0]}, "Delivering at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departed on Truck {packageInfo[11]} at {packageInfo[8]}, weight of the package is {packageInfo[6]}. Current Status is {packageInfo[10]} ')
-
                     else:
-
                         packageInfo[10] = "Delivered"
                         print(
                             f'Package ID: {packageInfo[0]}, "Delivered at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departed on Truck {packageInfo[11]} at {packageInfo[8]}, weight of the package is {packageInfo[6]}. Current Status is {packageInfo[10]} ')
-            else:
-                print("Invalid Package ID entered")
+            except ValueError:
+                print("Invalid entry")
+                exit()
+            except IndexError:
+                print("Invalid Package ID")
+                exit()
+            except TypeError:
+                print("Invalid Package ID")
                 exit()
 
     # Get by address
+    # O(N^2)
     def get_by_address(self, myhash, truck1, truck2, truck3, dataTest):
         print(
             "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
@@ -224,39 +207,106 @@ class Status():
         user_address = input(
             "Please input street address for example '300 Washington st: ")
         if user_time != "Quit" or user_time != "q" or user_time != "quit":
-            (hrs, min, sec) = user_time.split(':')
-            con_user_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
+            con_user_time = self.convert_time(user_time)
             # Need to check if the package 9 address needs to be updated since the address was wrong
             check_time = "10:20:00"
-            (hrs, min, sec) = check_time.split(":")
-            con_check_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
+            con_check_time = self.convert_time(check_time)
             if con_user_time >= con_check_time:
                 # Package 9 address needs to be found and update
-                result = myhash.search("9")
-                # print(f"This is the search result {result}")
-                result[1] = "410 S State St"
-                result[2] = "Salt Lake City"
-                result[3] = "UT"
-                result[4] = "84111"
-                # result[11] = "2"
-                myhash.update("9", result)
-                if result in truck1:
-                    print("Found in Truck 1")
-                elif result in truck2:
-                    dataTest.replace_in_truck("9", truck2, result, 2)
-                    # print(truck2)
-                    temp2 = set_values(truck2)
-                    temp2.insert(0, "0")
-                    T2 = get_shortest_path(temp2)
-                    self.set_time(T2['path'], truck2, 2, myhash)
-                else:
-                    print("Found in Truck 3")
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
             for count in range(1, 41):
                 package = myhash.search(str(count))
-                # print(package[1])
                 if user_address == package[1]:
+                    try:
+                        starting_time = myhash.search(str(count))[8]
+                        deliver_time = myhash.search(str(count))[5]
+                        conv_starting_time = self.convert_time(starting_time)
+                        con_del_time = self.convert_time(deliver_time)
+                    except ValueError:
+                        pass
+                    if conv_starting_time > con_user_time:
+                        package[10] = "At Hub"
+                        print(
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                    elif conv_starting_time < con_user_time:
+                        if con_user_time < con_del_time:
+                            print("Reached here")
+                            package[10] = "In transit"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                        else:
+                            package[10] = "Delivered"
+                            print(
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+        else:
+            print("Please input a valid address")
+            exit()
+
+    # Get by City
+    # O(N^2)
+    def get_by_city(self, myhash, truck1, truck2, truck3, dataTest):
+        print(
+            "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
+        user_time = input(
+            'Enter a time to get all package[s] till that time\n and enter as (HH:MM:SS): ')
+        user_address = input(
+            "Please input the city of package for example 'Salt Lake City' :")
+        if user_time != "Quit" or user_time != "q" or user_time != "quit":
+            con_user_time = self.convert_time(user_time)
+            # Need to check if the package 9 address needs to be updated since the address was wrong
+            check_time = "10:20:00"
+            con_check_time = self.convert_time(check_time)
+            if con_user_time >= con_check_time:
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
+            for count in range(1, 41):
+                package = myhash.search(str(count))
+                if user_address == package[2]:
+                    try:
+                        starting_time = myhash.search(str(count))[8]
+                        deliver_time = myhash.search(str(count))[5]
+                        conv_starting_time = self.convert_time(starting_time)
+                        con_del_time = self.convert_time(deliver_time)
+                    except ValueError:
+                        pass
+                    if conv_starting_time > con_user_time:
+                        package[10] = "At Hub"
+                        print(
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                    elif conv_starting_time < con_user_time:
+                        if con_user_time < con_del_time:
+                            package[10] = "In transit"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                        else:
+                            package[10] = "Delivered"
+                            print(
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+        else:
+            print("Please input a valid city")
+            exit()
+
+    # Get by Zipcode
+    # Get by City
+    # O(N^2)
+    def get_by_zipcode(self, myhash, truck1, truck2, truck3, dataTest):
+        print(
+            "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
+        user_time = input(
+            'Enter a time to get all package[s] till that time\n and enter as (HH:MM:SS): ')
+        user_address = input(
+            "Please input the zipcode of the package for example '87788' :")
+        if user_time != "Quit" or user_time != "q" or user_time != "quit":
+            con_user_time = self.convert_time(user_time)
+            # Need to check if the package 9 address needs to be updated since the address was wrong
+            check_time = "10:20:00"
+            con_check_time = self.convert_time(check_time)
+            if con_user_time >= con_check_time:
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
+            # O(N^2)
+            for count in range(1, 41):
+                # O(N)
+                package = myhash.search(str(count))
+                if user_address == package[4]:
                     try:
                         starting_time = myhash.search(str(count))[8]
                         deliver_time = myhash.search(str(count))[5]
@@ -271,85 +321,188 @@ class Status():
                     if conv_starting_time > con_user_time:
                         package[10] = "At Hub"
                         print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
                     elif conv_starting_time < con_user_time:
                         if con_user_time < con_del_time:
-                            print("Reached here")
                             package[10] = "In transit"
                             print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
 
                         else:
                             package[10] = "Delivered"
                             print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
             else:
-                print("Please input a valid address")
-                exit()        
-    # Set status
-    # Instead of repeating the code its done here once
+                print("Input valid weight")
 
-    def set_delivery(self, user_time, starting_time, delivery_time, myhash, truck1, truck2, truck3, dataTest):
-        print("Something")
+    # Get by status
+    # Get by City
+    # O(N^2)
+    def get_by_pack_weight(self, myhash, truck1, truck2, truck3, dataTest):
+        print(
+            "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
         user_time = input(
             'Enter a time to get all package[s] till that time\n and enter as (HH:MM:SS): ')
+        user_weight = input(
+            "Please input by weight of the package for example '2' :")
+        if user_time != "Quit" or user_time != "q" or user_time != "quit":
+            con_user_time = self.convert_time(user_time)
+            # Need to check if the package 9 address needs to be updated since the address was wrong
+            check_time = "10:20:00"
+            con_check_time = self.convert_time(check_time)
+            if con_user_time >= con_check_time:
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
+            # O(N^2)
+            for count in range(1, 41):
+                # O(N)
+                package = myhash.search(str(count))
+                if user_weight == package[6]:
+                    try:
+                        starting_time = myhash.search(str(count))[8]
+                        deliver_time = myhash.search(str(count))[5]
+                        conv_starting_time = self.convert_time(
+                            starting_time)
+                        (h, m, s) = deliver_time.split(':')
+                        con_del_time = datetime.timedelta(
+                            hours=int(h), minutes=int(m), seconds=int(s))
+                    except ValueError:
+                        print("Invalid weight")
+                    if conv_starting_time > con_user_time:
+                        package[10] = "At Hub"
+                        print(
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                    elif conv_starting_time < con_user_time:
+                        if con_user_time < con_del_time:
+                            package[10] = "In transit"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                        else:
+                            package[10] = "Delivered"
+                            print(
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+
+    # Get the status of the package by delivery status
+    # O(N^2)
+
+    def get_by_delivery_status(self, myhash, truck1, truck2, truck3, dataTest):
+        print(
+            "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
+        user_time = input(
+            'Enter a time to get all package[s] till that time\n and enter as (HH:MM:SS): ')
+        # This is to get the status of the package
+        user_del_status = input(
+            "Please input the status of the package by either entering 'at the hub' or 'en-route' or 'delivered' :")
         if user_time != "Quit" or user_time != "q" or user_time != "quit":
             (hrs, min, sec) = user_time.split(':')
             con_user_time = datetime.timedelta(
                 hours=int(hrs), minutes=int(min), seconds=int(sec))
             # Need to check if the package 9 address needs to be updated since the address was wrong
             check_time = "10:20:00"
-            (hrs, min, sec) = check_time.split(":")
-            con_check_time = datetime.timedelta(
-                hours=int(hrs), minutes=int(min), seconds=int(sec))
+            con_check_time = self.convert_time(check_time)
             if con_user_time >= con_check_time:
-                # Package 9 address needs to be found and update
-                result = myhash.search("9")
-                # print(f"This is the search result {result}")
-                result[1] = "410 S State St"
-                result[2] = "Salt Lake City"
-                result[3] = "UT"
-                result[4] = "84111"
-                myhash.update("9", result)
-                if result in truck1:
-                    print("Found in Truck 1")
-                elif result in truck2:
-                    dataTest.replace_in_truck("9", truck2, result, 2)
-                    temp2 = set_values(truck2)
-                    temp2.insert(0, "0")
-                    T2 = get_shortest_path(temp2)
-                    self.set_time(T2['path'], truck2, 2, myhash)
-                else:
-                    print("Found in Truck 3")
-            # O(N)
-            for count in range(1, 40):
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
+            # O(N^2)
+            for count in range(1, 41):
+                # O(N)
                 package = myhash.search(str(count))
                 try:
-                    # O(N)
                     starting_time = myhash.search(str(count))[8]
-                    # O(N)
-                    delivery_time = myhash.search(str(count))[5]
-                    (h, m, s) = starting_time.split(':')
+                    deliver_time = myhash.search(str(count))[5]
+                    (hr, min, sec) = starting_time.split(":")
                     conv_starting_time = datetime.timedelta(
-                        hours=int(h), minutes=int(m), seconds=int(s))
-                    (h, m, s) = delivery_time.split(':')
-                    conv_del_time = datetime.timedelta(
-                        hours=int(h), minutes=int(m), seconds=int(s))
+                        hours=int(hr), minutes=int(min), seconds=int(sec))
+                    (hr, min, sec) = deliver_time.split(":")
+                    con_del_time = datetime.timedelta(
+                        hours=int(hr), minutes=int(min), seconds=int(sec))
                 except ValueError:
                     pass
-
                 if conv_starting_time > con_user_time:
                     package[10] = "At Hub"
-                    print(
-                        f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}, Current status {package[10]}')
-
-                elif conv_starting_time < con_user_time:
-                    if con_user_time < conv_del_time:
-                        package[10] = "In transit"
+                    if user_del_status == "At Hub" or user_del_status == "at the hub":
                         print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                elif conv_starting_time < con_user_time:
+                    if con_user_time < con_del_time:
+                        package[10] = "In transit"
+                        if user_del_status == "In transit" or user_del_status == "en-route":
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
 
                     else:
                         package[10] = "Delivered"
+                        if user_del_status == "Delivered" or user_del_status == "delivered":
+                            print(
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+
+    # Get the status of the package by delivery deadline
+    # O(N^2)
+    def get_by_del_deadline(self, myhash, truck1, truck2, truck3, dataTest):
+        print(
+            "If time is 'PM' then enter in 24 Hour format example 1:12pm would be 13:12:00 ")
+        user_time = input(
+            'Enter a time to get all package[s] till that time\n and enter as (HH:MM:SS): ')
+        user_deadline = input(
+            "Please input delivery deadline. Please input either 'EOD', '10:30:00' or '09:00:00 :")
+        if user_time != "Quit" or user_time != "q" or user_time != "quit":
+            con_user_time = self.convert_time(user_time)
+            # Need to check if the package 9 address needs to be updated since the address was wrong
+            check_time = "10:20:00"
+            con_check_time = self.convert_time(check_time)
+            if con_user_time >= con_check_time:
+                self.fix_address(myhash, truck1, truck2, truck3, dataTest)
+            # O(N^2)
+            for count in range(1, 41):
+                # O(N)
+                package = myhash.search(str(count))
+                user_conv = self.convert_time(user_deadline)
+                pack_deadline = self.convert_time(package[12])
+                if user_conv == pack_deadline:
+                    try:
+                        starting_time = myhash.search(str(count))[8]
+                        deliver_time = myhash.search(str(count))[5]
+                        conv_starting_time = self.convert_time(starting_time)
+                        (hr, min, sec) = deliver_time.split(":")
+                        con_del_time = datetime.timedelta(
+                            hours=int(hr), minutes=int(min), seconds=int(sec))
+                    except ValueError:
+                        pass
+                    if conv_starting_time > con_user_time:
+                        package[10] = "At Hub"
                         print(
-                            f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                    elif conv_starting_time < con_user_time:
+                        if con_user_time < con_del_time:
+                            package[10] = "In transit"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                        else:
+                            package[10] = "Delivered"
+                            print(
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+
+    # Formula to search by condition
+
+    # def print_by_condition(self, myhash, truck1, truck2, truck3, dataTest, user_input, condition):
+    #     for count in range(1, 41):
+    #         package = myhash.search(str(count))
+    #         if user_input == package[condition]:
+    #             try:
+    #                 starting_time = myhash.search(str(count))[8]
+    #                 deliver_time = myhash.search(str(count))[5]
+    #                 conv_starting_time = self.convert_tim(starting_time)
+    #                 con_del_time = self.convert_time(deliver_time)
+    #             except ValueError:
+    #                 pass
+    #             if conv_starting_time > con_user_time:
+    #                 package[10] = "At Hub"
+    #                 print(
+    #                         f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+    #             elif conv_starting_time < con_user_time:
+    #                 if con_user_time < con_del_time:
+    #                     package[10] = "In transit"
+    #                     print(
+    #                             f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+    #                 else:
+    #                     package[10] = "Delivered"
+    #                     print(
+    #                             f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
