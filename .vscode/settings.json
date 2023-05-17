@@ -1,3 +1,5 @@
 {
-  "editor.defaultFormatter": "ms-python.autopep8"
+  "editor.defaultFormatter": "ms-python.autopep8",
+  "files.autoSave": "afterDelay",
+  "editor.wordWrap": "on"
 }

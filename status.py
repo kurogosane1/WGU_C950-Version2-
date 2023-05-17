@@ -125,23 +125,29 @@ class Status():
                     (h, m, s) = delivery_time.split(':')
                     conv_del_time = datetime.timedelta(
                         hours=int(h), minutes=int(m), seconds=int(s))
+                    if conv_starting_time > con_user_time:
+                        package[10] = "At Hub"
+                        print(
+                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}, Current status {package[10]}. What was the original delivery deadline {package[12]}')
+
+                    elif conv_starting_time < con_user_time:
+                        if con_user_time < conv_del_time:
+                            package[10] = "In transit"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]}. What was the original delivery deadline {package[12]} ')
+
+                        else:
+                            package[10] = "Delivered"
+                            print(
+                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}. What was the original delivery deadline {package[12]}')
                 except ValueError:
                     pass
-                if conv_starting_time > con_user_time:
-                    package[10] = "At Hub"
-                    print(
-                        f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}, Current status {package[10]}. What was the original delivery deadline {package[12]}')
-
-                elif conv_starting_time < con_user_time:
-                    if con_user_time < conv_del_time:
-                        package[10] = "In transit"
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]}. What was the original delivery deadline {package[12]} ')
-
-                    else:
-                        package[10] = "Delivered"
-                        print(
-                            f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}. What was the original delivery deadline {package[12]}')
+                except IndexError:
+                    print("Invalid Time Range Provided")
+                    exit()
+                except TypeError:
+                    print("Invalid Time Range Provided")
+                    exit()
 
     # This is to get the individual package status
     # O(N^2)
@@ -188,8 +194,7 @@ class Status():
                         print(
                             f'Package ID: {packageInfo[0]}, "Delivered at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departed on Truck {packageInfo[11]} at {packageInfo[8]}, weight of the package is {packageInfo[6]}. Current Status is {packageInfo[10]} ')
             except ValueError:
-                print("Invalid entry")
-                exit()
+                pass
             except IndexError:
                 print("Invalid Package ID")
                 exit()
@@ -222,25 +227,29 @@ class Status():
                         deliver_time = myhash.search(str(count))[5]
                         conv_starting_time = self.convert_time(starting_time)
                         con_del_time = self.convert_time(deliver_time)
+                        if conv_starting_time > con_user_time:
+                            package[10] = "At Hub"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                        elif conv_starting_time < con_user_time:
+                            if con_user_time < con_del_time:
+                                print("Reached here")
+                                package[10] = "In transit"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                            else:
+                                package[10] = "Delivered"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+
                     except ValueError:
                         pass
-                    if conv_starting_time > con_user_time:
-                        package[10] = "At Hub"
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-                    elif conv_starting_time < con_user_time:
-                        if con_user_time < con_del_time:
-                            print("Reached here")
-                            package[10] = "In transit"
-                            print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-                        else:
-                            package[10] = "Delivered"
-                            print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
-        else:
-            print("Please input a valid address")
-            exit()
+                    except IndexError:
+                        print("Invalid address")
+                        exit()
+                    except TypeError:
+                        print("Please enter a valid address")
+                        exit()
 
     # Get by City
     # O(N^2)
@@ -266,24 +275,27 @@ class Status():
                         deliver_time = myhash.search(str(count))[5]
                         conv_starting_time = self.convert_time(starting_time)
                         con_del_time = self.convert_time(deliver_time)
+                        if conv_starting_time > con_user_time:
+                            package[10] = "At Hub"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                        elif conv_starting_time < con_user_time:
+                            if con_user_time < con_del_time:
+                                package[10] = "In transit"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                            else:
+                                package[10] = "Delivered"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
                     except ValueError:
                         pass
-                    if conv_starting_time > con_user_time:
-                        package[10] = "At Hub"
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-                    elif conv_starting_time < con_user_time:
-                        if con_user_time < con_del_time:
-                            package[10] = "In transit"
-                            print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-                        else:
-                            package[10] = "Delivered"
-                            print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
-        else:
-            print("Please input a valid city")
-            exit()
+                    except TypeError:
+                        print("Please enter a valid")
+                        exit()
+                    except IndexError:
+                        print("Invalid City")
+                        exit()
 
     # Get by Zipcode
     # Get by City
@@ -316,24 +328,29 @@ class Status():
                         (hr, min, sec) = deliver_time.split(":")
                         con_del_time = datetime.timedelta(
                             hours=int(hr), minutes=int(min), seconds=int(sec))
+
+                        if conv_starting_time > con_user_time:
+                            package[10] = "At Hub"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                        elif conv_starting_time < con_user_time:
+                            if con_user_time < con_del_time:
+                                package[10] = "In transit"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+
+                            else:
+                                package[10] = "Delivered"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
                     except ValueError:
                         pass
-                    if conv_starting_time > con_user_time:
-                        package[10] = "At Hub"
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-                    elif conv_starting_time < con_user_time:
-                        if con_user_time < con_del_time:
-                            package[10] = "In transit"
-                            print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-
-                        else:
-                            package[10] = "Delivered"
-                            print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
-            else:
-                print("Input valid weight")
+                    except TypeError:
+                        print("Please enter a valid zipcode")
+                        exit()
+                    except IndexError:
+                        print("Invalid zipcode")
+                        exit()
 
     # Get by status
     # Get by City
@@ -365,21 +382,27 @@ class Status():
                         (h, m, s) = deliver_time.split(':')
                         con_del_time = datetime.timedelta(
                             hours=int(h), minutes=int(m), seconds=int(s))
+                        if conv_starting_time > con_user_time:
+                            package[10] = "At Hub"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                        elif conv_starting_time < con_user_time:
+                            if con_user_time < con_del_time:
+                                package[10] = "In transit"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                            else:
+                                package[10] = "Delivered"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
                     except ValueError:
+                        pass
+                    except IndexError:
                         print("Invalid weight")
-                    if conv_starting_time > con_user_time:
-                        package[10] = "At Hub"
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-                    elif conv_starting_time < con_user_time:
-                        if con_user_time < con_del_time:
-                            package[10] = "In transit"
-                            print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-                        else:
-                            package[10] = "Delivered"
-                            print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                        exit()
+                    except TypeError:
+                        print("Invalid weight")
+                        exit()
 
     # Get the status of the package by delivery status
     # O(N^2)
@@ -414,25 +437,31 @@ class Status():
                     (hr, min, sec) = deliver_time.split(":")
                     con_del_time = datetime.timedelta(
                         hours=int(hr), minutes=int(min), seconds=int(sec))
+                    if conv_starting_time > con_user_time:
+                        package[10] = "At Hub"
+                        if user_del_status == "At Hub" or user_del_status == "at the hub":
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                    elif conv_starting_time < con_user_time:
+                        if con_user_time < con_del_time:
+                            package[10] = "In transit"
+                            if user_del_status == "In transit" or user_del_status == "en-route":
+                                print(
+                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+
+                        else:
+                            package[10] = "Delivered"
+                            if user_del_status == "Delivered" or user_del_status == "delivered":
+                                print(
+                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
                 except ValueError:
                     pass
-                if conv_starting_time > con_user_time:
-                    package[10] = "At Hub"
-                    if user_del_status == "At Hub" or user_del_status == "at the hub":
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-                elif conv_starting_time < con_user_time:
-                    if con_user_time < con_del_time:
-                        package[10] = "In transit"
-                        if user_del_status == "In transit" or user_del_status == "en-route":
-                            print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-
-                    else:
-                        package[10] = "Delivered"
-                        if user_del_status == "Delivered" or user_del_status == "delivered":
-                            print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                except IndexError:
+                    print("Please enter the provided status options")
+                    exit()
+                except TypeError:
+                    print("Please enter the provided status options")
+                    exit()
 
     # Get the status of the package by delivery deadline
     # O(N^2)
@@ -464,45 +493,24 @@ class Status():
                         (hr, min, sec) = deliver_time.split(":")
                         con_del_time = datetime.timedelta(
                             hours=int(hr), minutes=int(min), seconds=int(sec))
+                        if conv_starting_time > con_user_time:
+                            package[10] = "At Hub"
+                            print(
+                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                        elif conv_starting_time < con_user_time:
+                            if con_user_time < con_del_time:
+                                package[10] = "In transit"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                            else:
+                                package[10] = "Delivered"
+                                print(
+                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
                     except ValueError:
                         pass
-                    if conv_starting_time > con_user_time:
-                        package[10] = "At Hub"
-                        print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-                    elif conv_starting_time < con_user_time:
-                        if con_user_time < con_del_time:
-                            package[10] = "In transit"
-                            print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-                        else:
-                            package[10] = "Delivered"
-                            print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
-
-    # Formula to search by condition
-
-    # def print_by_condition(self, myhash, truck1, truck2, truck3, dataTest, user_input, condition):
-    #     for count in range(1, 41):
-    #         package = myhash.search(str(count))
-    #         if user_input == package[condition]:
-    #             try:
-    #                 starting_time = myhash.search(str(count))[8]
-    #                 deliver_time = myhash.search(str(count))[5]
-    #                 conv_starting_time = self.convert_tim(starting_time)
-    #                 con_del_time = self.convert_time(deliver_time)
-    #             except ValueError:
-    #                 pass
-    #             if conv_starting_time > con_user_time:
-    #                 package[10] = "At Hub"
-    #                 print(
-    #                         f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
-    #             elif conv_starting_time < con_user_time:
-    #                 if con_user_time < con_del_time:
-    #                     package[10] = "In transit"
-    #                     print(
-    #                             f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
-    #                 else:
-    #                     package[10] = "Delivered"
-    #                     print(
-    #                             f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                    except IndexError:
+                        print("Please enter a valid deadline")
+                        exit()
+                    except TypeError:
+                        print("Please enter a valid deadline")
+                        exit()
