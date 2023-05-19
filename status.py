@@ -128,18 +128,18 @@ class Status():
                     if conv_starting_time > con_user_time:
                         package[10] = "At Hub"
                         print(
-                            f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}, Current status {package[10]}. What was the original delivery deadline {package[12]}')
+                            f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
 
                     elif conv_starting_time < con_user_time:
                         if con_user_time < conv_del_time:
                             package[10] = "In transit"
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]}. What was the original delivery deadline {package[12]} ')
+                                f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
 
                         else:
                             package[10] = "Delivered"
                             print(
-                                f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}. What was the original delivery deadline {package[12]}')
+                                f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                 except ValueError:
                     pass
                 except IndexError:
@@ -182,17 +182,17 @@ class Status():
                 if conv_starting_time > con_user_time:
                     packageInfo[10] = "At Hub"
                     print(
-                        f'Package ID: {packageInfo[0]}, "Delivering at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departs on Truck {packageInfo[11]} at {packageInfo[8]}. Current Status is {packageInfo[10]}')
+                        f'Package ID: {packageInfo[0]}, "Address: {packageInfo[1]} City: {packageInfo[2]} State: {packageInfo[3]} ZipCode: {packageInfo[4]}" | Truck {packageInfo[11]} | Departs at {packageInfo[8]}|  Current status {packageInfo[10]} | Deadline expected {packageInfo[12]}')
 
                 elif conv_starting_time < con_user_time:
                     if con_user_time < conv_del_time:
                         packageInfo[10] = "In transit"
                         print(
-                            f'Package ID: {packageInfo[0]}, "Delivering at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departed on Truck {packageInfo[11]} at {packageInfo[8]}, weight of the package is {packageInfo[6]}. Current Status is {packageInfo[10]} ')
+                            f'Package ID: {packageInfo[0]} | "Delivering at Address: {packageInfo[1]}, {packageInfo[2]} City: {packageInfo[3]} ZipCode {packageInfo[4]}" | Truck {packageInfo[11]} | Departed at {packageInfo[8]}| Weight of the package: {packageInfo[6]} | Current status {packageInfo[10]}| Delivery Deadline: {packageInfo[12]} ')
                     else:
                         packageInfo[10] = "Delivered"
                         print(
-                            f'Package ID: {packageInfo[0]}, "Delivered at {packageInfo[1]}, {packageInfo[2]}, {packageInfo[3]}, {packageInfo[4]}". Departed on Truck {packageInfo[11]} at {packageInfo[8]}, weight of the package is {packageInfo[6]}. Current Status is {packageInfo[10]} ')
+                            f'Package ID: {packageInfo[0]}| "Delivered at Address: {packageInfo[1]} City: {packageInfo[2]} State: {packageInfo[3]} ZipCode: {packageInfo[4]}". | Truck {packageInfo[11]} | Departed at {packageInfo[8]}| Weight of the package: {packageInfo[6]}| Current status:  {packageInfo[10]} at {packageInfo[5]}|  Delivery Deadline {packageInfo[12]}')
             except ValueError:
                 pass
             except IndexError:
@@ -230,17 +230,17 @@ class Status():
                         if conv_starting_time > con_user_time:
                             package[10] = "At Hub"
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                                f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                         elif conv_starting_time < con_user_time:
                             if con_user_time < con_del_time:
                                 print("Reached here")
                                 package[10] = "In transit"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                    f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
                             else:
                                 package[10] = "Delivered"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                    f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
 
                     except ValueError:
                         pass
@@ -278,16 +278,16 @@ class Status():
                         if conv_starting_time > con_user_time:
                             package[10] = "At Hub"
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                                f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                         elif conv_starting_time < con_user_time:
                             if con_user_time < con_del_time:
                                 package[10] = "In transit"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                    f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
                             else:
                                 package[10] = "Delivered"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                    f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                     except ValueError:
                         pass
                     except TypeError:
@@ -332,17 +332,17 @@ class Status():
                         if conv_starting_time > con_user_time:
                             package[10] = "At Hub"
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                                f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                         elif conv_starting_time < con_user_time:
                             if con_user_time < con_del_time:
                                 package[10] = "In transit"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                    f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
 
                             else:
                                 package[10] = "Delivered"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                    f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                     except ValueError:
                         pass
                     except TypeError:
@@ -385,16 +385,16 @@ class Status():
                         if conv_starting_time > con_user_time:
                             package[10] = "At Hub"
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                                f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                         elif conv_starting_time < con_user_time:
                             if con_user_time < con_del_time:
                                 package[10] = "In transit"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                    f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
                             else:
                                 package[10] = "Delivered"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                    f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                     except ValueError:
                         pass
                     except IndexError:
@@ -441,19 +441,19 @@ class Status():
                         package[10] = "At Hub"
                         if user_del_status == "At Hub" or user_del_status == "at the hub":
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                                f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                     elif conv_starting_time < con_user_time:
                         if con_user_time < con_del_time:
                             package[10] = "In transit"
                             if user_del_status == "In transit" or user_del_status == "en-route":
                                 print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                    f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
 
                         else:
                             package[10] = "Delivered"
                             if user_del_status == "Delivered" or user_del_status == "delivered":
                                 print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                    f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                 except ValueError:
                     pass
                 except IndexError:
@@ -496,16 +496,16 @@ class Status():
                         if conv_starting_time > con_user_time:
                             package[10] = "At Hub"
                             print(
-                                f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departs on Truck {package[11]} at {package[8]}. Current Status is {package[10]}')
+                                f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                         elif conv_starting_time < con_user_time:
                             if con_user_time < con_del_time:
                                 package[10] = "In transit"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivering at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}, Current status {package[10]} ')
+                                    f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
                             else:
                                 package[10] = "Delivered"
                                 print(
-                                    f'Package ID: {package[0]}, "Delivered at {package[1]}, {package[2]}, {package[3]}, {package[4]}". Departed on Truck {package[11]} at {package[8]}, weight of the package is {package[6]}. Current status {package[10]} at {package[5]}')
+                                    f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                     except ValueError:
                         pass
                     except IndexError:

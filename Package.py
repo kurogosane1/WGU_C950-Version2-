@@ -11,7 +11,7 @@ class Packages():
     hasher = HashingData()
     # Constructor
 
-    def __init__(self, id, address, city, state, zip, delivery, weight, note, starting_time, delivery_address, status):
+    def __init__(self, id, address, city, state, zip, delivery, weight, note, starting_time, delivery_address, status, truck_number, delivery_time):
         self
         self.id = id
         self.address = address
@@ -22,8 +22,11 @@ class Packages():
         self.weight = weight
         self.note = note
         self.starting_time = starting_time
-        self.delivery_address = ''
-        self.status = 'At Hub'
+        self.delivery_address = delivery_address
+        self.status = status
+        self.truck_number = truck_number
+        self.delivery_time = delivery_time
+        
 
     # Package information is generated from this
 

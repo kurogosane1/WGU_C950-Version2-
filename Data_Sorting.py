@@ -41,10 +41,12 @@ class DataSort():
                 status = "At Hub"
                 truck_number = ''
                 delivery_time = row[5]
-
-                value = [id, address, city, state, zip, delivery,
-                         size, notes, starting_time, delivery_address, status, truck_number, delivery_time]
-
+                Package = Packages(id, address, city, state, zip, delivery,
+                                   size, notes, starting_time, delivery_address, status, truck_number, delivery_time)
+                # value = [id, address, city, state, zip, delivery,
+                #          size, notes, starting_time, delivery_address, status, truck_number, delivery_time]
+                value = [Package.id, Package.address, Package.city, Package.state, Package.zip, Package.delivery,
+                         Package.weight, Package.note, Package.starting_time, Package.delivery_address, Package.status, Package.truck_number, Package.delivery_time]
                 # Conditional statements to determine which truck a package should be located and put these packages into a nested list for quick loaded
                 # Correct incorrect package details
                 if '84104' in value[4] and '10:30' not in value[5]:
