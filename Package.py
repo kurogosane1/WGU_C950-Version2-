@@ -22,11 +22,10 @@ class Packages():
         self.weight = weight
         self.note = note
         self.starting_time = starting_time
-        self.delivery_address = delivery_address
-        self.status = status
+        self.delivery_address = ''
+        self.status = 'at Hub'
         self.truck_number = truck_number
         self.delivery_time = delivery_time
-        
 
     # Package information is generated from this
 
@@ -45,4 +44,3 @@ class Packages():
         if packages is not None:
             return packages
         return None
-

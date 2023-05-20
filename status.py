@@ -116,30 +116,16 @@ class Status():
             for count in range(1, 41):
                 # O(N)
                 package = myHash.search(str(count))
+                # print(f'This is count {count} and package {package} \n')
                 try:
                     # O(N)
-                    starting_time = myHash.search(str(count))[8]
+                    starting_time = package[8]
                     # O(N)
-                    delivery_time = myHash.search(str(count))[5]
+                    delivery_time = package[5]
                     conv_starting_time = self.convert_time(starting_time)
                     (h, m, s) = delivery_time.split(':')
                     conv_del_time = datetime.timedelta(
                         hours=int(h), minutes=int(m), seconds=int(s))
-                    if conv_starting_time > con_user_time:
-                        package[10] = "At Hub"
-                        print(
-                            f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
-
-                    elif conv_starting_time < con_user_time:
-                        if con_user_time < conv_del_time:
-                            package[10] = "In transit"
-                            print(
-                                f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
-
-                        else:
-                            package[10] = "Delivered"
-                            print(
-                                f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
                 except ValueError:
                     pass
                 except IndexError:
@@ -148,6 +134,22 @@ class Status():
                 except TypeError:
                     print("Invalid Time Range Provided")
                     exit()
+                if conv_starting_time > con_user_time:
+                    package[10] = "At Hub"
+                    print(
+                        f'Package ID: {package[0]} | "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
+
+                elif conv_starting_time < con_user_time:
+                    if con_user_time < conv_del_time:
+                        package[10] = "In transit"
+                        print(
+                            f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')
+
+                    else:
+                        package[10] = "Delivered"
+                        print(
+                            f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
+
 
     # This is to get the individual package status
     # O(N^2)
