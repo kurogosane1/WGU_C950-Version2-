@@ -74,7 +74,7 @@ class DataSort():
 
                 # Inserting trucks to the main list as well
                 self.my_Hash.insert(id, value)
-
+    
      # Now being able to deliver trucks list
      # O(1)
     def get_first_truck(self):
