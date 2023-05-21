@@ -150,7 +150,6 @@ class Status():
                         print(
                             f'Package ID: {package[0]}| "Delivered at Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}". | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]}| Current status:  {package[10]} at {package[5]}|  Delivery Deadline {package[12]}')
 
-
     # This is to get the individual package status
     # O(N^2)
 
@@ -235,7 +234,6 @@ class Status():
                                 f'Package ID: {package[0]}, "Address: {package[1]} City: {package[2]} State: {package[3]} ZipCode: {package[4]}" | Truck {package[11]} | Departs at {package[8]}|  Current status {package[10]} | Deadline expected {package[12]}')
                         elif conv_starting_time < con_user_time:
                             if con_user_time < con_del_time:
-                                print("Reached here")
                                 package[10] = "In transit"
                                 print(
                                     f'Package ID: {package[0]} | "Delivering at Address: {package[1]}, {package[2]} City: {package[3]} ZipCode {package[4]}" | Truck {package[11]} | Departed at {package[8]}| Weight of the package: {package[6]} | Current status {package[10]}| Delivery Deadline: {package[12]} ')

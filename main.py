@@ -15,7 +15,7 @@ status = Status()
 truck1 = dataTest.get_first_truck()
 truck2 = dataTest.get_second_truck()
 truck3 = dataTest.get_third_truck()
-print(f'This is truck 2 {truck2}')
+
 # Temp 1,2 and 3 are the Index for each package index is identified and saved temporaily -> O(N)
 temp1 = set_values(truck1)
 temp2 = set_values(truck2)
@@ -36,6 +36,5 @@ status.set_time(T1['path'], truck1, 1, myHash)
 status.set_time(T2['path'], truck2, 2, myHash)
 status.set_time(T3['path'], truck3, 3, myHash)
 
-
 # The user menue with options is run and represented here O(N^2)
-userMenu(status, myHash, truck1, truck2, truck3, dataTest, T1,T2,T3)
+userMenu(status, myHash, truck1, truck2, truck3, dataTest, T1, T2, T3)

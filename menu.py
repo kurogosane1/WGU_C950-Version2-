@@ -17,7 +17,7 @@ def userMenu(status, myHash, truck1, truck2, truck3, dataTest, T1, T2, T3):
     print('Total distance truck 3 travelled is ' +
           str(T3['distance']) + " miles")
     print('Total distance travelled is ' +
-          str(T1['distance'] + T2['distance'] + T3['distance']) + " miles \n")
+          str(round(T1['distance'] + T2['distance'] + T3['distance'], 2)) + " miles \n")
 
     print("Please select the following options by selecting either 1-8")
     print("Anytime you'd like to exit or quit, please type in either 'q' or 'quit' or 'exit'")

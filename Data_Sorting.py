@@ -54,7 +54,7 @@ class DataSort():
                     # self.test3.append(value)
 
                 # To filter out EOD to truck delivery
-                if value[5] != 'EOD':
+                if value[5] != 'EOD' or value[0] == '19':
                     if 'Must' in value[7] or 'None' in value[7]:
                         # if len(self.Truck_1.get_truck_list(value)) < 17:
                         self.Truck_1.add_to_Truck(value)
@@ -74,7 +74,7 @@ class DataSort():
 
                 # Inserting trucks to the main list as well
                 self.my_Hash.insert(id, value)
-    
+
      # Now being able to deliver trucks list
      # O(1)
     def get_first_truck(self):
